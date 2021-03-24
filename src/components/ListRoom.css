@@ -1,0 +1,112 @@
+.list-room-form {
+  background-color: #fff;
+  color: #353535;
+  padding: 20px;
+}
+
+.list-room-form > form {
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: auto;
+  max-width: 500px;
+  min-width: 300px;
+  padding: auto;
+}
+
+.list-room-form input,
+select,
+textarea {
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #353535;
+  background-color: #fff;
+  /* color: #353535; */
+  margin-bottom: 10px;
+}
+
+.list-room-form label {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+.list-room-form button {
+  margin: 40px 0;
+  height: 40px;
+  background-color: #fec135;
+  font-size: 16px;
+  font-weight: bold;
+  color: #353535;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.currency {
+  float: left;
+  display: block;
+  width: fit-content;
+
+  text-align: left;
+}
+
+.btn-div-rm {
+  margin: 0;
+  padding: 0;
+  height: fit-content;
+  display: flex;
+}
+
+.btn-div-rm button {
+  margin: 0;
+
+  box-sizing: border-box;
+  /* background-color: #353535; */
+  color: #fec135;
+  border-radius: 3px;
+
+  flex: 2;
+}
+
+.btn-div-rm :first-child {
+  background-color: #aaa;
+  color: #000;
+
+  margin-right: 3px;
+}
+
+.cc {
+  border-right: none;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+}
+
+.phone {
+  flex: 1;
+  border-top-left-radius: 0% !important;
+  border-bottom-left-radius: 0% !important;
+  border-left: none !important;
+}
+
+.ph {
+  width: 100%;
+
+  display: flex;
+}
+.red {
+  color: red;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

@@ -1,0 +1,41 @@
+.tagbox {
+  /* width: 60%; */
+  margin: 0 -5px;
+  max-width: 500px;
+  margin-top: -5px;
+  min-width: 300px;
+  /* padding: auto; */
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tagbox > span {
+  padding: 5px 6px;
+  background-color: #fec135;
+  margin: 5px 4px;
+  color: #353535;
+  display: inline-flex;
+  align-items: center;
+  /* justify-content: left; */
+  font-size: 15px;
+  border-radius: 3px;
+  text-align: left;
+}
+
+.cancel {
+  font-size: 16px !important;
+  padding: none !important;
+  height: 16px !important;
+  width: 16px !important;
+  overflow: hidden;
+  object-fit: contain;
+  margin-left: 5px;
+
+  color: #353535;
+  cursor: pointer;
+}
+
+.cancel > path {
+  pointer-events: none;
+}

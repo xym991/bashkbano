@@ -1,0 +1,194 @@
+.search {
+  background-color: #353535;
+  height: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  flex: 1;
+}
+
+.heading h1 {
+  color: #fec135;
+  font-weight: 600;
+  font-size: 3rem;
+  text-align: left;
+  width: 100%;
+  margin: 0;
+  padding: 30px 50px;
+}
+
+.heading {
+  width: 100%;
+}
+
+.search-input {
+  display: flex;
+  /* width: 100%; */
+  border-radius: 6px;
+  border: 3px solid #fec135;
+
+  height: 2.4rem;
+  min-width: 260px;
+  max-width: 400px;
+  align-items: center;
+  margin-right: auto;
+  margin-left: 50px;
+  background-color: #fff;
+}
+
+.search-input input {
+  flex: 1;
+  font-size: 18px;
+  background-color: inherit;
+  border: none;
+  color: #353535;
+  /* height: inherit; */
+}
+
+input:focus {
+  outline: none;
+}
+
+.MuiSvgIcon-root {
+  color: #fec135;
+  transform: scale(1.2);
+  /* padding: 0 0 0 5px; */
+}
+
+.search-submit {
+  background-color: inherit;
+  border: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+.arrow-icon {
+  color: #353535;
+  padding: 0 !important;
+}
+
+.Login {
+  width: 100%;
+}
+.search h3 {
+  margin-left: 50px;
+  margin-top: 60px;
+  font-weight: 400;
+  color: #fff;
+  text-align: left;
+}
+
+.Login div {
+  width: 100%;
+  text-align: left;
+  margin-left: 50px;
+  margin-bottom: 40px;
+}
+
+button {
+  cursor: pointer;
+}
+.Login button {
+  height: 35px;
+  width: 100px;
+  margin: 0 8px;
+  font-size: 17px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.login-btn {
+  background-color: #fec135;
+  color: #353535;
+  border: 2px solid #fec135;
+}
+
+.lg {
+  width: 200px !important;
+}
+
+.sign-up-btn {
+  background-color: inherit;
+  color: #fec135;
+  border: 2px solid #fec135;
+}
+
+.search > div {
+  max-width: 1360px;
+  text-align: left;
+  width: 100%;
+}
+
+.login-span {
+  color: #fff;
+}
+
+@media (max-width: 660px) {
+  .search {
+    height: 360px;
+  }
+  .heading h1 {
+    font-size: 2.4rem;
+
+    margin: 10px auto 0;
+    padding: 20px 0;
+
+    text-align: center;
+  }
+
+  .search-input {
+    margin: 25px 30px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .Login {
+    text-align: center;
+  }
+
+  .Login h3 {
+    text-align: center;
+    margin: 40px auto 0;
+    font-size: 16px;
+  }
+
+  .Login div {
+    text-align: center;
+    padding: 0;
+    margin: 10px auto 20px;
+    /* display: none; */
+  }
+
+  .Login button {
+    height: 30px;
+    font-size: 16px;
+    width: 100px;
+  }
+
+  .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    overflow: none;
+  }
+
+  .login-span {
+    color: #fec135;
+  }
+
+  .lg {
+    width: 200px !important;
+    margin: 4px !important;
+  }
+}
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,15 @@
+.list {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* .filters {
+  width: 100%;
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  overflow: auto;
+  background-color: lightblue;
+} */
