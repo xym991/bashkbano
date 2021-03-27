@@ -43,7 +43,7 @@ function MyListings() {
       const ids = [];
       doc.forEach((item) => {
         ids.push(item.data().id);
-        setRoommateUserList([...roommateUserList, doc]);
+        setRoommateUserList([...roommateUserList, item]);
       });
 
       ids.forEach(async (item) => {

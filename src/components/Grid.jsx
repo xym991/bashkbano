@@ -4,6 +4,7 @@ import "./Grid.css";
 import GridItem from "./GridItem";
 
 function Grid({ data, type, ml, Ref, collection }) {
+  console.log(Ref);
   return (
     <div className="grid">
       {data?.map((item, i) => (
@@ -13,7 +14,7 @@ function Grid({ data, type, ml, Ref, collection }) {
             ml={ml}
             type={type}
             item={item ? item : null}
-            Ref={Ref && Ref[i]}
+            Ref={Ref ? Ref[i] : null}
             collection={collection}
           />
         </Link>

@@ -84,9 +84,8 @@ function ListRoommate() {
   }
   useEffect(async () => {
     if (state.image != "") {
-      console.log(state);
-
       const id = await db.collection("roommate-listings").add({ ...state });
+
       await db
         .collection("users")
         .doc(user.uid)
@@ -118,7 +117,7 @@ function ListRoommate() {
         />
         <label htmlFor="locations">
           {" "}
-          Locations...<span className="red">*</span>
+          Locations looking for in the city<span className="red"></span>
         </label>
         <textarea
           style={{ resize: "none" }}
@@ -137,7 +136,7 @@ function ListRoommate() {
         </div>
 
         <label htmlFor="city">
-          City<span className="red">*</span>
+          City looking in<span className="red">*</span>
         </label>
         <input
           type="text"
@@ -211,17 +210,6 @@ function ListRoommate() {
           type="date"
           name="movingDate"
           id=""
-        />
-
-        <label htmlFor="occupation">
-          Occupation<span className="red">*</span>
-        </label>
-        <input
-          required
-          onChange={handleChange}
-          value={state.occupation}
-          type="text"
-          name="occupation"
         />
 
         <label htmlFor="children">Children</label>

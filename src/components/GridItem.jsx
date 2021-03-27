@@ -3,26 +3,32 @@ import { useGlobalState } from "../StateProvider";
 import CancelIcon from "@material-ui/icons/Cancel";
 import "./GridItem.css";
 import { db } from "../firebase";
+import { useHistory } from "react-router-dom";
 
 function GridItem({ type, item, ml, Ref, collection }) {
   console.log(Ref);
   const [data, setData] = useState({});
-
+  const history = useHistory();
   useEffect(async () => {
     setData(item?.data());
+    // console.log(Ref);
   }, []);
 
   async function remove(e) {
     e.preventDefault();
     try {
-      const rm1 = await db
-        .collection(collection)
-        .doc(Ref.data().id.id)
-        .delete();
-      const rm2 = await Ref.ref.delete();
+      if (Ref) {
+        const rm1 = await db
+          .collection(collection)
+          .doc(Ref?.data().id.id)
+          .delete();
+        const rm2 = await Ref?.ref.delete();
 
-      console.log("rm1", rm1);
-      console.log("rm2", rm2);
+        history.replace("/");
+
+        console.log("rm1", rm1);
+        console.log("rm2", rm2);
+      }
     } catch (err) {
       console.log(err);
     }

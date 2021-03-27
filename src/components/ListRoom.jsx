@@ -77,24 +77,13 @@ function ListRoom() {
   }
   useEffect(async () => {
     if (state.coverImage) {
-      const userRef = await db
+      const id = await db.collection("room-listings").add({ ...state });
+
+      await db
         .collection("users")
         .doc(user.uid)
-        .collection("room-listings");
-
-      const check = userRef.get();
-      if (check.length > 3) {
-        return new Error("limit reached. try deleting previous listings");
-      } else {
-        const id = await db.collection("room-listings").add({ ...state });
-        userRef.add({ id: id });
-      }
-
-      // await db
-      //   .collection("users")
-      //   .doc(user.uid)
-      //   .collection("room-listings")
-      //
+        .collection("room-listings")
+        .add({ id: id });
 
       setState({});
       history.push("/");
