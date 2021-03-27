@@ -75,7 +75,7 @@ function ListRoommate() {
             image: url,
           });
 
-          console.log(url);
+          history.push("/");
         }
       } catch (err) {
         console.log(err);

@@ -4,7 +4,9 @@
   /* background-color: #d5d5d5; */
   border-radius: 5px;
   max-width: 450px;
+  overflow: hidden;
   display: flex;
+  position: relative;
   flex-direction: column;
   transition: transform 0.2s ease-out;
   box-shadow: 3px 3px 15px #aaa, -3px -3px 12px #ccc;
@@ -73,6 +75,8 @@ body::-webkit-scrollbar {
   margin: 10px 0 8px;
   position: absolute;
   top: 6px;
+  max-height: 22px;
+  overflow: hidden;
   color: black;
   /* color: #fce135; */
 }
@@ -80,15 +84,18 @@ body::-webkit-scrollbar {
 .description {
   margin: 10px 0 6px;
   position: absolute;
-  top: 58px;
+  top: 68px;
   font-size: 16px;
+  max-height: 96px;
+  overflow: hidden;
+  height: fit-content;
   color: #353535;
 }
 
 .footline {
   color: #666;
   margin-top: 0;
-  margin-bottom: 4px;
+  margin-bottom: -5px;
   position: absolute;
   bottom: 10px;
   font-size: 15px;
@@ -122,4 +129,42 @@ body::-webkit-scrollbar {
   height: 136px;
   width: 136px;
   border-radius: 50%;
+}
+
+.listing-remove {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* border-radius: 50%; */
+  height: 15px;
+  width: 15px;
+  object-fit: contain;
+  overflow: hidden;
+  /* padding: 0 2px; */
+  box-sizing: border-box;
+  right: 10px;
+  border-radius: 8px;
+  top: 10px;
+  font-size: 15px;
+  transform: scale(1.3);
+  position: absolute;
+  background-color: #353535;
+}
+
+.listing-remove > .cancel {
+  color: #fec135;
+  margin: 0 !important;
+  /*
+  height: min-content;
+  width: min-content;
+  background-color: #353535;
+  border-radius: 50%;
+  padding: 0 !important;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.rmm {
 }

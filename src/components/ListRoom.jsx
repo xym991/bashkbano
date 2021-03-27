@@ -77,13 +77,24 @@ function ListRoom() {
   }
   useEffect(async () => {
     if (state.coverImage) {
-      console.log(state);
-      const id = await db.collection("room-listings").add({ ...state });
-      await db
+      const userRef = await db
         .collection("users")
         .doc(user.uid)
-        .collection("room-listings")
-        .add({ id: id });
+        .collection("room-listings");
+
+      const check = userRef.get();
+      if (check.length > 3) {
+        return new Error("limit reached. try deleting previous listings");
+      } else {
+        const id = await db.collection("room-listings").add({ ...state });
+        userRef.add({ id: id });
+      }
+
+      // await db
+      //   .collection("users")
+      //   .doc(user.uid)
+      //   .collection("room-listings")
+      //
 
       setState({});
       history.push("/");
@@ -248,7 +259,7 @@ function ListRoom() {
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="couples">Couples</option>
-          <option value="either">male of female(no couples)</option>
+          <option value="either">male or female(no couples)</option>
         </select>
         <label htmlFor="bathroomType">
           Bathroom type<span className="red">*</span>

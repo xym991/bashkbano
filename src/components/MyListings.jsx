@@ -8,6 +8,9 @@ function MyListings() {
   const [roomListings, setRoomListings] = useState([]);
   const [roommateListing, setRoommateListing] = useState([]);
   const [{ user }, dispatch] = useGlobalState();
+  const [roommateUserList, setRoommateUserList] = useState([]);
+  const [roomUserList, setRoomUserList] = useState([]);
+
   useEffect(async () => {
     try {
       const doc = await db
@@ -18,6 +21,7 @@ function MyListings() {
       const ids = [];
       doc.forEach((doc) => {
         ids.push(doc.data().id);
+        setRoomUserList([...roomUserList, doc]);
       });
 
       ids.forEach(async (item) => {
@@ -37,7 +41,10 @@ function MyListings() {
         .collection("roommate-listings")
         .get();
       const ids = [];
-      doc.forEach((item) => ids.push(item.data().id));
+      doc.forEach((item) => {
+        ids.push(item.data().id);
+        setRoommateUserList([...roommateUserList, doc]);
+      });
 
       ids.forEach(async (item) => {
         const data = await db
@@ -57,11 +64,23 @@ function MyListings() {
     <div className="my-listings">
       <div className="listings-room-listings">
         <h3 className="mlh">Room Listings ({roomListings.length}/3)</h3>
-        <Grid data={roomListings} type="rooms" />
+        <Grid
+          data={roomListings}
+          collection={"room-listings"}
+          ml={true}
+          Ref={roomUserList}
+          type="rooms"
+        />
       </div>
       <div className="listings-roommate-listings">
         <h3 className="mlh">Roommate Listing ({roommateListing.length}/1)</h3>
-        <Grid data={roommateListing} type={"roommates"} />
+        <Grid
+          data={roommateListing}
+          Ref={roommateUserList}
+          type={"roommates"}
+          collection={"roommate-listings"}
+          ml={true}
+        />
       </div>
     </div>
   );

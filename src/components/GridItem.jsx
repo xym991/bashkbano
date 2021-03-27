@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useGlobalState } from "../StateProvider";
+import CancelIcon from "@material-ui/icons/Cancel";
 import "./GridItem.css";
+import { db } from "../firebase";
 
-function GridItem({ type, data }) {
+function GridItem({ type, item, ml, Ref, collection }) {
+  console.log(Ref);
+  const [data, setData] = useState({});
+
+  useEffect(async () => {
+    setData(item?.data());
+  }, []);
+
+  async function remove(e) {
+    e.preventDefault();
+    try {
+      const rm1 = await db
+        .collection(collection)
+        .doc(Ref.data().id.id)
+        .delete();
+      const rm2 = await Ref.ref.delete();
+
+      console.log("rm1", rm1);
+      console.log("rm2", rm2);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="grid-item">
       <div className={type === "roommates" ? "grid-rm-img" : "grid-img"}>
@@ -10,7 +36,11 @@ function GridItem({ type, data }) {
       </div>
       <div className="grid-details">
         <span className="price">${data?.rent || data?.budget}</span>
-        {data?.address && <h3 className="title">{data?.address}</h3>}
+        {data?.address && data?.address.length > 30 ? (
+          <h3 className="title">{data?.address.substring(0, 30)}...</h3>
+        ) : (
+          <h3 className="title">{data?.address}</h3>
+        )}
         {data?.name && <h3 className="title">{data?.name}</h3>}
 
         {data?.gender && (
@@ -30,21 +60,28 @@ function GridItem({ type, data }) {
         )}
         <p className="description">
           {data?.propertyDescription && data?.propertyDescription.length > 200
-            ? data?.propertyDescription.substring(0, 200)
+            ? data?.propertyDescription.substring(0, 200) + "..."
             : data?.propertyDescription}
           {data?.roommateDescription && data?.roommateDescription.length > 200
-            ? data?.roommateDescription.substring(0, 200)
+            ? data?.roommateDescription.substring(0, 250) + "..."
             : data?.roommateDescription}
-          {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-          repellendus, quod dolore, minima unde nulla voluptatem ad deleniti
-          beatae, nisi possimus sas officiis ... */}
         </p>
-        {data?.city && (
+        {data?.roommateDescription && data?.city && (
           <p className="footline">
             <small>city looking in : {data?.city}</small>
           </p>
         )}
+        {data?.propertyDescription && data?.city && (
+          <p className="footline">
+            <small>city : {data?.city}</small>
+          </p>
+        )}
       </div>
+      {ml && (
+        <div className="listing-remove">
+          <CancelIcon className="cancel" onClick={remove} />
+        </div>
+      )}
     </div>
   );
 }
