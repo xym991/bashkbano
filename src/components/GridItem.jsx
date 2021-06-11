@@ -6,16 +6,14 @@ import { db } from "../firebase";
 import { useHistory } from "react-router-dom";
 
 function GridItem({ type, item, ml, Ref, collection }) {
-  console.log(Ref);
   const [data, setData] = useState({});
   const history = useHistory();
   useEffect(async () => {
     setData(item?.data());
-    // console.log(Ref);
   }, []);
 
   async function remove(e) {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       if (Ref) {
         const rm1 = await db
@@ -41,7 +39,9 @@ function GridItem({ type, item, ml, Ref, collection }) {
         {/* <img src="https://res.cloudinary.com/roomies/image/upload/s--DxR29iJI--/c_fill,dpr_1.0,f_auto,fl_lossy,g_faces,h_300,q_auto,w_300/jsfbnnaeimvchfcp2d2j" /> */}
       </div>
       <div className="grid-details">
-        <span className="price">${data?.rent || data?.budget}</span>
+        <span className="price">
+          {data.currency} {data?.rent || data?.budget}
+        </span>
         {data?.address && data?.address.length > 30 ? (
           <h3 className="title">{data?.address.substring(0, 30)}...</h3>
         ) : (
@@ -56,13 +56,7 @@ function GridItem({ type, item, ml, Ref, collection }) {
         )}
 
         {data?.propertyType && (
-          <h4>
-            {data?.furnished +
-              " room in a " +
-              data?.propertyType +
-              " with " +
-              data?.bathroomType}
-          </h4>
+          <h4>{data?.furnished + " room in a " + data?.propertyType}</h4>
         )}
         <p className="description">
           {data?.propertyDescription && data?.propertyDescription.length > 200
@@ -84,8 +78,46 @@ function GridItem({ type, item, ml, Ref, collection }) {
         )}
       </div>
       {ml && (
-        <div className="listing-remove">
-          <CancelIcon className="cancel" onClick={remove} />
+        <div>
+          <div
+            className="listing-remove"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .querySelector(`#${Ref?.data().id.id}`)
+                .classList.toggle("height100");
+            }}
+          >
+            delete <CancelIcon className="cancel" onClick={remove} />
+          </div>
+          <div className="confirm" id={Ref?.data().id.id}>
+            <p>are you sure you want to delete this listing?</p>
+            <div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  remove();
+                  document
+                    .querySelector(`#${Ref?.data().id.id}`)
+                    .classList.toggle("height100");
+                }}
+                className="login-btn "
+              >
+                yes
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  document
+                    .querySelector(`#${Ref?.data().id.id}`)
+                    .classList.toggle("height100");
+                }}
+                className="sign-up-btn gr "
+              >
+                no
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

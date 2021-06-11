@@ -80,6 +80,10 @@ body {
   color: #fec135;
 }
 
+.header .MuiSvgIcon-root {
+  color: inherit;
+}
+
 @media (max-width: 660px) {
   .header__nav {
     height: 0;
@@ -98,7 +102,10 @@ body {
     height: 40px;
     width: 100%;
   }
-  .header__nav-link:hover {
+
+  .mobile-view-nav:hover {
+    color: #353535;
+    background-color: #fec135;
   }
 
   .nav-active {

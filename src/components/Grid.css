@@ -1,5 +1,5 @@
 .grid {
-  margin: 50px auto;
+  margin: 30px auto 20px;
   max-width: 1250px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -8,14 +8,13 @@
   grid-column-gap: 10px;
 }
 
-
 @media (max-width: 660px) {
   .grid {
-    margin: 30px auto;
+    margin: auto;
     /* align-items: center;
     justify-content: center; */
   }
   .grid-item {
-    /* margin: auto; */
+    margin: 15px auto 0;
   }
 }

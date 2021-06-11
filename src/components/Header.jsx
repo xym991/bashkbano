@@ -4,6 +4,7 @@ import "./Header.css";
 import Logo from "./images/bashkbano-logo.svg";
 import { useGlobalState } from "../StateProvider";
 import { auth } from "../firebase";
+import MenuIcon from "@material-ui/icons/Menu";
 
 function Header({ type }) {
   const [state, dispatch] = useGlobalState();
@@ -75,7 +76,7 @@ function Header({ type }) {
           }}
           className="mobile-view-nav"
         >
-          =
+          <MenuIcon />
         </div>
       </div>
     </div>

@@ -5,30 +5,37 @@ import { useGlobalState } from "../StateProvider";
 import { useHistory } from "react-router-dom";
 import "./TagBox.css";
 import CancelIcon from "@material-ui/icons/Cancel";
+import lodash from "lodash";
+import cities from "../ALMKXK";
 
 function ListRoom() {
   const [{ user }, dispatch] = useGlobalState();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState({
     address: "",
-    propertyType: "",
-    rent: "",
-    billsIncluded: "",
-    securityDeposit: "",
+    propertyType: "apartment",
+    rent: "0",
+    billsIncluded: "yes",
+    rooms: null,
+    // securityDeposit: "0",
     availableFrom: "",
+    currency: "€‎",
     preferredGender: "",
-    bathroomType: "",
+    bathrooms: "0",
     propertyDescription: "",
     roomTags: [],
-    furnished: "",
-
+    furnished: "furnished",
+    city: "",
     phone: null,
-    cc: null,
+    searchAdd: "",
+    cc: "+383",
     coverImage: "",
     roomImages: [],
   });
   const [coverImage, setCoverImage] = useState(null);
   const [roomImages, setRoomImages] = useState(null);
+  const [done, setDone] = useState(false);
 
   function handleChange(e) {
     setState((prev) => {
@@ -41,6 +48,7 @@ function ListRoom() {
   async function submit(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       if (coverImage != null) {
         const uploadCover = await storage
           .ref("images/" + `${coverImage}${Math.random()}`)
@@ -70,13 +78,22 @@ function ListRoom() {
         ...state,
         coverImage: _coverImage,
         roomImages: [..._roomImages],
+        roomTags: state.roomTags.map((item) => item.toLowerCase()),
+        search: [
+          state.address.toLowerCase(),
+          state.city.toLowerCase(),
+          ...state.address.toLowerCase().split(" "),
+          ...state.address.toLowerCase().split(","),
+        ],
+        city: lodash.capitalize(state.city.toLowerCase()),
       });
     } catch (err) {
       console.log(err);
     }
   }
   useEffect(async () => {
-    if (state.coverImage) {
+    if (state.coverImage && !done) {
+      setLoading(true);
       const id = await db.collection("room-listings").add({ ...state });
 
       await db
@@ -85,6 +102,7 @@ function ListRoom() {
         .collection("room-listings")
         .add({ id: id });
 
+      setDone(true);
       setState({});
       history.push("/");
     }
@@ -106,15 +124,15 @@ function ListRoom() {
   }
 
   function addTag(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (e.target.value) {
-        setState({
-          ...state,
-          roomTags: state.roomTags.concat([e.target.value]),
-        });
-        e.target.value = "";
-      }
+    e.preventDefault();
+    if (e.target.parentNode.childNodes[0].value) {
+      setState({
+        ...state,
+        roomTags: state.roomTags.concat([
+          e.target.parentNode.childNodes[0].value,
+        ]),
+      });
+      e.target.parentNode.childNodes[0].value = "";
     }
   }
 
@@ -129,253 +147,321 @@ function ListRoom() {
   }
 
   return (
-    <div className="list-room-form">
-      <form onSubmit={submit} id="list-room" action="">
-        <label htmlFor="address">
-          Address<span className="red">*</span> (do not include house number)
-        </label>
-        <input
-          required
-          value={state.address}
-          onChange={handleChange}
-          name="address"
-          type="text"
-        />
+    <div>
+      {!loading && (
+        <div className="list-room-form">
+          <form onSubmit={submit} id="list-room" action="">
+            <label htmlFor="city">
+              City<span className="red">*</span>
+            </label>
+            <input
+              type="text"
+              list="cityInputslr"
+              name="city"
+              value={state.city}
+              onChange={handleChange}
+            />
+            <label htmlFor="address">
+              Address<span className="red">*</span> (do not include house
+              number)
+            </label>
+            <input
+              required
+              value={state.address}
+              onChange={handleChange}
+              name="address"
+              type="text"
+            />
 
-        <label htmlFor="city">
-          City<span className="red">*</span>
-        </label>
-        <input
-          type="text"
-          name="city"
-          value={state.city}
-          onChange={handleChange}
-        />
+            <datalist id="cityInputslr">
+              {cities.map((item) => (
+                <option value={item} />
+              ))}
+            </datalist>
 
-        <label htmlFor="furnished">
-          Furnishing<span className="red">*</span>
-        </label>
-        <select
-          required
-          name="furnished"
-          value={state.furnished}
-          onChange={handleChange}
-        >
-          <option value="">select...</option>{" "}
-          <option value="Furnished">Furnished</option>
-          <option value="Semi furnished">Semi furnished</option>
-          <option value="Unfurnished"> Unfurnished</option>
-        </select>
+            <label htmlFor="furnished">
+              Furnishing<span className="red">*</span>
+            </label>
+            <select
+              required
+              name="furnished"
+              value={state.furnished}
+              onChange={handleChange}
+            >
+              <option value="furnished">Furnished</option>
+              <option value="semi-furnished">Semi furnished</option>
+              <option value="unfurnished"> Unfurnished</option>
+            </select>
 
-        <label htmlFor="propertyType">
-          Property type<span className="red">*</span>
-        </label>
-        <select
-          required
-          value={state.propertyType}
-          onChange={handleChange}
-          name="propertyType"
-        >
-          <option value="">select...</option>{" "}
-          <option value="apartment">Apartment</option>{" "}
-          <option value="condo">Condo</option>{" "}
-          <option value="house">House</option>{" "}
-          <option value="townhouse">Townhouse</option>{" "}
-          <option value="basement">Basement</option>{" "}
-          <option value="loft">Loft</option>{" "}
-          <option value="studio">Studio</option>{" "}
-          <option value="trailer">Trailer</option>
-        </select>
-        <label htmlFor="rent">
-          Rent<span className="red">*</span> ($ per month)
-        </label>
+            <label htmlFor="propertyType">
+              Property type<span className="red">*</span>
+            </label>
+            <select
+              required
+              value={state.propertyType}
+              onChange={handleChange}
+              name="propertyType"
+            >
+              <option value="apartment">Apartment</option>{" "}
+              <option value="condo">Condo</option>{" "}
+              <option value="house">House</option>{" "}
+              <option value="townhouse">Townhouse</option>{" "}
+              <option value="basement">Basement</option>{" "}
+              <option value="loft">Loft</option>{" "}
+              <option value="studio">Studio</option>{" "}
+              <option value="trailer">Trailer</option>
+            </select>
+            <label htmlFor="rent">
+              Rent<span className="red">*</span> ({" "}
+              <select
+                name="currency"
+                onChange={handleChange}
+                value={state.currency}
+                style={{
+                  height: "30px",
+                  padding: "5px",
+                }}
+              >
+                <option value="€‎">€‎</option>
+                <option value="Ден">Ден</option>
+                <option value="L">L</option>
+              </select>{" "}
+              per month)
+            </label>
 
-        <input
-          required
-          value={state.rent}
-          onChange={handleChange}
-          name="rent"
-          type="number"
-        />
-        <label htmlFor="billsIncluded">
-          Bills included<span className="red">*</span>
-        </label>
-        <select
-          value={state.billsIncluded}
-          onChange={handleChange}
-          name="billsIncluded"
-          id=""
-        >
-          {" "}
-          required
-          <option value="">select...</option>
-          <option value="no">no</option>
-          <option value="yes">yes</option>
-        </select>
-        <label htmlFor="securityDeposit">
-          Security deposit<span className="red">*</span> ($)
-        </label>
-
-        <input
-          required
-          onChange={handleChange}
-          value={state.securityDeposit}
-          name="securityDeposit"
-          type="number"
-        />
-        <label htmlFor="availableFrom">
-          Available from<span className="red">*</span>
-        </label>
-        <input
-          required
-          onChange={handleChange}
-          value={state.availableFrom}
-          type="date"
-          name="availableFrom"
-        />
-        <label htmlFor="preferredGender">
-          Preferred gender<span className="red">*</span>
-        </label>
-        <select
-          required
-          onChange={handleChange}
-          value={state.preferredGender}
-          name="preferredGender"
-          id=""
-        >
-          <option value="">select...</option>
-          <option value="any">Any</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="couples">Couples</option>
-          <option value="either">male or female(no couples)</option>
-        </select>
-        <label htmlFor="bathroomType">
-          Bathroom type<span className="red">*</span>
-        </label>
-        <select
-          required
-          onChange={handleChange}
-          value={state.bathroomType}
-          name="bathroomType"
-          id=""
-        >
-          <option value="">select...</option>
-          <option value="shared-bathroom">Shared bathroom</option>
-          <option value="seperate-bathroom">Seperate bathroom</option>
-          <option value="ensuite">Ensuite</option>
-        </select>
-        <label htmlFor="propertyDescription">
-          Describe your property<span className="red">*</span>
-        </label>
-        <textarea
-          required
-          onChange={handleChange}
-          value={state.propertyDescription}
-          name="propertyDescription"
-          id=""
-          cols="30"
-          rows="10"
-        ></textarea>
-
-        <label htmlFor="cover">
-          Cover image<span className="red">*</span>
-        </label>
-        <input
-          onChange={handleFileChange}
-          required
-          // value={state.coverImage}
-          type="file"
-          id="ci"
-          name="coverImage"
-          style={{ display: "none" }}
-        />
-        <div className="btn-div-rm">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#ci").click();
-            }}
-          >
-            Choose file
-          </button>
-        </div>
-
-        <label htmlFor="images">More images</label>
-        <input
-          onChange={handleFileChange}
-          type="file"
-          id="mi"
-          // value={state.roomImages}
-          name="roomImages"
-          style={{ display: "none" }}
-          multiple
-        />
-        <div className="btn-div-rm">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#mi").click();
-            }}
-          >
-            Choose file(s)
-          </button>
-        </div>
-
-        <label htmlFor="roomTags">
-          Tags (describe specific things about your property)
-          <br /> example : <br />
-          "cat friendly, senior citizens only, internet included, parking
-          included etc"
-        </label>
-        <textarea
-          onKeyPress={addTag}
-          name="roomTags"
-          id=""
-          cols="1"
-          rows="1"
-          style={{ resize: "none" }}
-        ></textarea>
-        <div className="tagbox">
-          {state.roomTags?.map((item, index) => (
-            <span className={index} key={"rlt" + index}>
+            <input
+              required
+              value={state.rent}
+              onChange={handleChange}
+              name="rent"
+              type="number"
+            />
+            <label htmlFor="billsIncluded">
+              Bills included<span className="red">*</span>
+            </label>
+            <select
+              value={state.billsIncluded}
+              onChange={handleChange}
+              name="billsIncluded"
+              id=""
+              required
+            >
               {" "}
-              {item} <CancelIcon onClick={removeTag} className="cancel" />{" "}
-            </span>
-          ))}
-        </div>
-        <label htmlFor="phone">
-          Phone Number<span className="red">*</span>
-        </label>
-        <div className="ph">
-          <select
-            className="cc"
-            name="cc"
-            id=""
-            value={state.cc}
-            onChange={handleChange}
-          >
-            <option value="+88">+88</option>
-            <option value="+89">+89</option>
-            <option value="+90">+90</option>
-          </select>
-          <input
-            type="number"
-            name="phone"
-            className="phone"
-            value={state.phone}
-            onChange={handleChange}
-          />
-        </div>
-        {(state.phone && state.phone?.length < 10) ||
-        state.phone?.length > 10 ? (
-          <p style={{ color: "red", fontSize: "12px", marginTop: "-6px" }}>
-            enter a valid phone number
-          </p>
-        ) : null}
+              <option value="yes">yes</option>
+              <option value="no">no</option>
+            </select>
+            {/* <label htmlFor="securityDeposit">
+              Security deposit<span className="red">*</span> ({state.currency})
+            </label>
 
-        <button type="submit">Create Listing</button>
-      </form>
+            <input
+              required
+              onChange={handleChange}
+              value={state.securityDeposit}
+              name="securityDeposit"
+              type="number"
+            /> */}
+
+            <label htmlFor="rooms">Number of rooms</label>
+            <input
+              onChange={handleChange}
+              value={state.rooms}
+              name="rooms"
+              type="number"
+            />
+            <label htmlFor="availableFrom">
+              Available from<span className="red">*</span>
+            </label>
+            <input
+              required
+              onChange={handleChange}
+              value={state.availableFrom}
+              type="date"
+              name="availableFrom"
+            />
+            <label htmlFor="preferredGender">
+              Preferred gender<span className="red">*</span>
+            </label>
+            <select
+              required
+              onChange={handleChange}
+              value={state.preferredGender}
+              name="preferredGender"
+              id=""
+            >
+              <option value="">select...</option>
+              <option value="any">Any</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="couples">Couples</option>
+              <option value="either">Male or Memale(no couples)</option>
+            </select>
+            <label htmlFor="bathrooms">
+              Bathroom type<span className="red">*</span>
+            </label>
+            {/* <select
+              required
+              onChange={handleChange}
+              value={state.bathrooms}
+              name="bathrooms"
+              id=""
+            >
+              <option value="shared-bathroom">Shared bathroom</option>
+              <option value="seperate-bathroom">Seperate bathroom</option>
+              <option value="ensuite">Ensuite</option>
+            </select> */}
+            <input
+              type="number"
+              name="bathrooms"
+              onChange={handleChange}
+              value={state.bathrooms}
+            />
+            <label htmlFor="propertyDescription">
+              Describe your property<span className="red">*</span>
+            </label>
+            <textarea
+              required
+              onChange={handleChange}
+              value={state.propertyDescription}
+              name="propertyDescription"
+              id=""
+              cols="30"
+              rows="10"
+            ></textarea>
+
+            <label htmlFor="cover">
+              Cover image<span className="red">*</span>
+            </label>
+            <input
+              onChange={handleFileChange}
+              required
+              // value={state.coverImage}
+              type="file"
+              id="ci"
+              name="coverImage"
+              style={{ display: "none" }}
+            />
+            <div className="btn-div-rm">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector("#ci").click();
+                }}
+              >
+                Choose file
+              </button>
+            </div>
+
+            <label htmlFor="images">More images</label>
+            <input
+              onChange={handleFileChange}
+              type="file"
+              id="mi"
+              // value={state.roomImages}
+              name="roomImages"
+              style={{ display: "none" }}
+              multiple
+            />
+            <div className="btn-div-rm">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector("#mi").click();
+                }}
+              >
+                Choose file(s)
+              </button>
+            </div>
+
+            <label htmlFor="roomTags">
+              Tags (describe specific things about your property)
+              <br /> example: <br />
+              "cat friendly, senior citizens only, internet included, parking
+              included etc"
+            </label>
+            <div className="taggy">
+              <textarea
+                name="roomTags"
+                id=""
+                cols="1"
+                rows="1"
+                style={{ resize: "none" }}
+              ></textarea>
+
+              <button className="add-tag" onClick={addTag}>
+                Add
+              </button>
+            </div>
+
+            <div className="tagbox">
+              {state.roomTags?.map((item, index) => (
+                <span className={index} key={"rlt" + index}>
+                  {" "}
+                  {item} <CancelIcon onClick={removeTag} className="cancel" />{" "}
+                </span>
+              ))}
+            </div>
+            <label htmlFor="phone">
+              Phone Number<span className="red">*</span>
+            </label>
+            <div className="ph">
+              <select
+                className="cc"
+                name="cc"
+                id=""
+                required
+                value={state.cc}
+                onChange={(e) => setState({ ...state, cc: e.target.value })}
+              >
+                <option value="+383">+383</option>
+                <option value="+355">+355</option>
+                <option value="+389">+389</option>
+              </select>
+              <input
+                type="number"
+                name="phone"
+                required
+                className="phone"
+                value={state.phone}
+                onChange={handleChange}
+              />
+            </div>
+            {(state.phone && state.phone?.length < 10) ||
+            state.phone?.length > 10 ? (
+              <p style={{ color: "red", fontSize: "12px", marginTop: "-6px" }}>
+                enter a valid phone number
+              </p>
+            ) : null}
+
+            <button type="submit">Create Listing</button>
+          </form>
+        </div>
+      )}
+
+      {loading && (
+        <div className="svg-div">
+          <svg
+            // style={{ marginTop: "260px" }}
+            class="list-svg"
+            height="120"
+            width="120"
+          >
+            <circle
+              cx="60"
+              cy="60"
+              r="40"
+              stroke="#fec135"
+              stroke-width="11"
+              fill="transparent"
+            />
+            <polygon
+              className="polygon"
+              points="120,0 60,60 120,120"
+              fill="white"
+            />
+          </svg>
+        </div>
+      )}
     </div>
   );
 }

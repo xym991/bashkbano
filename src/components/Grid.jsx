@@ -4,7 +4,7 @@ import "./Grid.css";
 import GridItem from "./GridItem";
 
 function Grid({ data, type, ml, Ref, collection }) {
-  console.log(Ref);
+  // console.log(data);
   return (
     <div className="grid">
       {data?.map((item, i) => (

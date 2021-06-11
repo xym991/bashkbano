@@ -11,6 +11,13 @@
   flex: 1;
 }
 
+.search h2 {
+  margin-left: 50px;
+  margin-top: 60px;
+  font-weight: 500;
+  color: #fff;
+  text-align: left;
+}
 .heading h1 {
   color: #fec135;
   font-weight: 600;
@@ -18,9 +25,20 @@
   text-align: left;
   width: 100%;
   margin: 0;
-  padding: 30px 50px;
+  padding: 10px 50px 20px;
 }
 
+.removeCity {
+  display: inline-flex;
+  position: relative;
+  top: 3px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.search button {
+  border-style: outset;
+}
 .heading {
   width: 100%;
 }
@@ -28,7 +46,8 @@
 .search-input {
   display: flex;
   /* width: 100%; */
-  border-radius: 6px;
+  border-radius: 4px;
+  border-style: outset;
   border: 3px solid #fec135;
 
   height: 2.4rem;
@@ -37,7 +56,157 @@
   align-items: center;
   margin-right: auto;
   margin-left: 50px;
+  margin-top: 66px;
   background-color: #fff;
+}
+
+.filtersList {
+  z-index: 20;
+  background-color: white;
+  height: fit-content;
+  transform: scale(0);
+  /* display: none; */
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  width: 240px;
+  /* display: flex; */
+  font-size: 17px;
+  transform-origin: top right;
+  font-weight: 700;
+  border-radius: 4px;
+  /* padding-top: 5px; */
+  /* padding: 5px 10px 0; */
+  /* padding: 10px 20px; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: space-around; */
+  overflow: hidden;
+  transition: 0.1s ease-in;
+  box-shadow: 1px 0px 8px #888;
+}
+
+.height100 {
+  transform: scale(1);
+  transform-origin: top right;
+}
+
+.filters input[type="checkbox" i]:checked {
+  color: #353535 !important;
+  background-color: #353535 !important;
+}
+
+.filtersListItem {
+  height: 40px;
+
+  overflow: hidden;
+  transition: 0.2s ease-in;
+}
+
+.expanded {
+  transform: rotate(180deg) !important;
+}
+
+.subitemsExpanded4 {
+  height: 160px;
+}
+
+.subitemsExpanded3 {
+  height: 130px;
+}
+
+.subitemsExpanded2 {
+  height: 100px;
+}
+
+.subitemsExpanded5 {
+  height: 190px;
+}
+
+.subitemsExpanded6 {
+  height: 220px;
+}
+
+.subitemsExpanded7 {
+  height: 250px;
+}
+
+.subitemsExpanded8 {
+  height: 280px;
+}
+
+.filtersListItem .subItems div {
+  padding: 0px 40px 0 30px;
+  height: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.15s ease-in;
+}
+
+.expandIcon {
+  pointer-events: none;
+}
+
+.filtersListSubItem:hover {
+  background-color: #ddd;
+}
+
+.fli {
+  height: 40px;
+  /* pointer-events: none; */
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  transition: 0.4s ease-out;
+  justify-content: space-between;
+}
+
+.fli svg {
+  transition: 0.2s;
+}
+
+.fli:hover {
+  background-color: #ddd;
+}
+
+.citySearch {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filters {
+  margin-right: 50px;
+  position: relative;
+  height: 36px;
+  display: flex;
+  /* background-color: #fec135; */
+  position: relative;
+  top: 16px;
+  color: #353535;
+}
+
+.filters .MuiSvgIcon-root {
+  color: #353535;
+  font-size: 17px;
+}
+
+.filters button {
+  padding: 0 10px;
+  font-size: 18px;
+  background-color: #fec135;
+  width: 100px;
+  color: #353535;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
 }
 
 .search-input input {
@@ -61,7 +230,7 @@ input:focus {
 
 .search-submit {
   background-color: inherit;
-  border: none;
+  border: none !important;
 }
 
 button:focus {
@@ -78,7 +247,7 @@ button:focus {
 }
 .search h3 {
   margin-left: 50px;
-  margin-top: 60px;
+  margin-top: 20px;
   font-weight: 400;
   color: #fff;
   text-align: left;
@@ -88,14 +257,14 @@ button:focus {
   width: 100%;
   text-align: left;
   margin-left: 50px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 button {
   cursor: pointer;
 }
 .Login button {
-  height: 35px;
+  height: 36px;
   width: 100px;
   margin: 0 8px;
   font-size: 17px;
@@ -134,12 +303,24 @@ button {
     height: 360px;
   }
   .heading h1 {
-    font-size: 2.4rem;
+    font-size: 2rem;
 
     margin: 10px auto 0;
-    padding: 20px 0;
+    padding: 0px 0;
 
     text-align: center;
+  }
+
+  .removeCity {
+    top: 5px;
+  }
+  .search h2 {
+    font-size: large;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .search-input {
@@ -166,9 +347,10 @@ button {
   }
 
   .Login button {
-    height: 30px;
+    height: 32px;
     font-size: 16px;
-    width: 100px;
+    width: 45vw !important;
+    box-sizing: border-box;
   }
 
   .heading {
@@ -185,10 +367,17 @@ button {
   }
 
   .lg {
-    width: 200px !important;
+    /* width: 200px !important; */
     margin: 4px !important;
   }
+  .filters {
+    margin: 0 10px;
+  }
+  .citySearch {
+    margin-left: 10px;
+  }
 }
+
 a {
   text-decoration: none;
 }
